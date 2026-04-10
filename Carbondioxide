@@ -1,0 +1,631 @@
+-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+-- â•‘        Carbondioxide GUI v1.0          â•‘
+-- â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+--             MAIN GUI SETUP
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "Carbondioxide"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = game.CoreGui
+
+-- â”€â”€ Toggle Button (Open/Close) â”€â”€
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Name = "ToggleButton"
+ToggleButton.Size = UDim2.new(0, 48, 0, 48)
+ToggleButton.Position = UDim2.new(0, 20, 0.5, -24)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 200, 80)
+ToggleButton.BorderSizePixel = 0
+ToggleButton.Text = "ToggleButton"
+ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+ToggleButton.TextSize = 22
+ToggleButton.Font = Enum.Font.GothamBold
+ToggleButton.ZIndex = 10
+ToggleButton.Parent = ScreenGui
+
+local ToggleCorner = Instance.new("UICorner")
+ToggleCorner.CornerRadius = UDim.new(1, 0)
+ToggleCorner.Parent = ToggleButton
+
+local ToggleStroke = Instance.new("UIStroke")
+ToggleStroke.Color = Color3.fromRGB(0, 255, 100)
+ToggleStroke.Thickness = 2
+ToggleStroke.Parent = ToggleButton
+
+-- â”€â”€ Main Frame â”€â”€
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 320, 0, 420)
+MainFrame.Position = UDim2.new(0.5, -160, 0.5, -210)
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
+MainFrame.Parent = ScreenGui
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 12)
+MainCorner.Parent = MainFrame
+
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Color3.fromRGB(0, 220, 90)
+MainStroke.Thickness = 2
+MainStroke.Parent = MainFrame
+
+-- â”€â”€ Glow Effect (ImageLabel trick) â”€â”€
+local GlowFrame = Instance.new("Frame")
+GlowFrame.Size = UDim2.new(1, 20, 1, 20)
+GlowFrame.Position = UDim2.new(0, -10, 0, -10)
+GlowFrame.BackgroundColor3 = Color3.fromRGB(0, 200, 70)
+GlowFrame.BackgroundTransparency = 0.88
+GlowFrame.BorderSizePixel = 0
+GlowFrame.ZIndex = 0
+GlowFrame.Parent = MainFrame
+
+local GlowCorner = Instance.new("UICorner")
+GlowCorner.CornerRadius = UDim.new(0, 18)
+GlowCorner.Parent = GlowFrame
+
+-- â”€â”€ Title Bar â”€â”€
+local TitleBar = Instance.new("Frame")
+TitleBar.Name = "TitleBar"
+TitleBar.Size = UDim2.new(1, 0, 0, 42)
+TitleBar.BackgroundColor3 = Color3.fromRGB(0, 160, 60)
+TitleBar.BorderSizePixel = 0
+TitleBar.ZIndex = 2
+TitleBar.Parent = MainFrame
+
+local TitleBarCorner = Instance.new("UICorner")
+TitleBarCorner.CornerRadius = UDim.new(0, 12)
+TitleBarCorner.Parent = TitleBar
+
+-- Fix bottom corners of title bar
+local TitleBarFix = Instance.new("Frame")
+TitleBarFix.Size = UDim2.new(1, 0, 0.5, 0)
+TitleBarFix.Position = UDim2.new(0, 0, 0.5, 0)
+TitleBarFix.BackgroundColor3 = Color3.fromRGB(0, 160, 60)
+TitleBarFix.BorderSizePixel = 0
+TitleBarFix.ZIndex = 2
+TitleBarFix.Parent = TitleBar
+
+-- Title Label
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, -90, 1, 0)
+TitleLabel.Position = UDim2.new(0, 14, 0, 0)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text = "Carbondioxide"
+TitleLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TitleLabel.TextSize = 16
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.ZIndex = 3
+TitleLabel.Parent = TitleBar
+
+-- â”€â”€ Minimize Button â”€â”€
+local MinimizeBtn = Instance.new("TextButton")
+MinimizeBtn.Name = "MinimizeBtn"
+MinimizeBtn.Size = UDim2.new(0, 28, 0, 28)
+MinimizeBtn.Position = UDim2.new(1, -64, 0.5, -14)
+MinimizeBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MinimizeBtn.BorderSizePixel = 0
+MinimizeBtn.Text = "-"
+MinimizeBtn.TextColor3 = Color3.fromRGB(0, 230, 90)
+MinimizeBtn.TextSize = 20
+MinimizeBtn.Font = Enum.Font.GothamBold
+MinimizeBtn.ZIndex = 4
+MinimizeBtn.Parent = TitleBar
+
+local MinCorner = Instance.new("UICorner")
+MinCorner.CornerRadius = UDim.new(0, 6)
+MinCorner.Parent = MinimizeBtn
+
+-- â”€â”€ Close Button â”€â”€
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Name = "CloseBtn"
+CloseBtn.Size = UDim2.new(0, 28, 0, 28)
+CloseBtn.Position = UDim2.new(1, -30, 0.5, -14)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(180, 20, 20)
+CloseBtn.BorderSizePixel = 0
+CloseBtn.Text = "X"
+CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseBtn.TextSize = 14
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.ZIndex = 4
+CloseBtn.Parent = TitleBar
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0, 6)
+CloseCorner.Parent = CloseBtn
+
+-- â”€â”€ Content Frame (scrollable area below title) â”€â”€
+local ContentFrame = Instance.new("ScrollingFrame")
+ContentFrame.Name = "ContentFrame"
+ContentFrame.Size = UDim2.new(1, -12, 1, -52)
+ContentFrame.Position = UDim2.new(0, 6, 0, 48)
+ContentFrame.BackgroundTransparency = 1
+ContentFrame.BorderSizePixel = 0
+ContentFrame.ScrollBarThickness = 4
+ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 200, 80)
+ContentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+ContentFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+ContentFrame.ZIndex = 2
+ContentFrame.Parent = MainFrame
+
+local ContentLayout = Instance.new("UIListLayout")
+ContentLayout.Padding = UDim.new(0, 8)
+ContentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+ContentLayout.Parent = ContentFrame
+
+local ContentPadding = Instance.new("UIPadding")
+ContentPadding.PaddingTop = UDim.new(0, 6)
+ContentPadding.PaddingBottom = UDim.new(0, 10)
+ContentPadding.Parent = ContentFrame
+
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+--             HELPER FUNCTIONS
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+-- Creates a styled feature button
+local function CreateButton(labelText, callback)
+    local Btn = Instance.new("TextButton")
+    Btn.Size = UDim2.new(1, -16, 0, 42)
+    Btn.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    Btn.BorderSizePixel = 0
+    Btn.Text = labelText
+    Btn.TextColor3 = Color3.fromRGB(0, 230, 90)
+    Btn.TextSize = 14
+    Btn.Font = Enum.Font.GothamBold
+    Btn.ZIndex = 3
+    Btn.Parent = ContentFrame
+
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 8)
+    BtnCorner.Parent = Btn
+
+    local BtnStroke = Instance.new("UIStroke")
+    BtnStroke.Color = Color3.fromRGB(0, 160, 60)
+    BtnStroke.Thickness = 1.5
+    BtnStroke.Parent = Btn
+
+    -- Hover animation
+    Btn.MouseEnter:Connect(function()
+        TweenService:Create(Btn, TweenInfo.new(0.15), {
+            BackgroundColor3 = Color3.fromRGB(0, 50, 20),
+            TextColor3 = Color3.fromRGB(120, 255, 160)
+        }):Play()
+    end)
+    Btn.MouseLeave:Connect(function()
+        TweenService:Create(Btn, TweenInfo.new(0.15), {
+            BackgroundColor3 = Color3.fromRGB(18, 18, 18),
+            TextColor3 = Color3.fromRGB(0, 230, 90)
+        }):Play()
+    end)
+
+    Btn.MouseButton1Click:Connect(function()
+        -- Click flash
+        TweenService:Create(Btn, TweenInfo.new(0.07), {
+            BackgroundColor3 = Color3.fromRGB(0, 200, 80)
+        }):Play()
+        task.delay(0.1, function()
+            TweenService:Create(Btn, TweenInfo.new(0.15), {
+                BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+            }):Play()
+        end)
+        callback()
+    end)
+
+    return Btn
+end
+
+-- Creates a section divider label
+local function CreateSectionLabel(text)
+    local Lbl = Instance.new("TextLabel")
+    Lbl.Size = UDim2.new(1, -16, 0, 24)
+    Lbl.BackgroundTransparency = 1
+    Lbl.Text = "" .. text .. ""
+    Lbl.TextColor3 = Color3.fromRGB(0, 180, 70)
+    Lbl.TextSize = 12
+    Lbl.Font = Enum.Font.GothamBold
+    Lbl.TextXAlignment = Enum.TextXAlignment.Center
+    Lbl.ZIndex = 3
+    Lbl.Parent = ContentFrame
+    return Lbl
+end
+
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+--               FEATURE BUTTONS
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+-- â”€â”€ Fly â”€â”€
+CreateSectionLabel("Movement")
+
+CreateButton("Fly (Speed Control)", function()
+    getgenv().script = "https://raw.githubusercontent.com/danya2854/Myscripts/refs/heads/main/Fly"
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/danya2854/Myscripts/refs/heads/main/loader"))()
+end)
+
+-- â”€â”€ No Clip â”€â”€
+CreateButton("No Clip", function()
+    local Workspace = game:GetService("Workspace")
+    local CoreGui = game:GetService("CoreGui")
+    local Players = game:GetService("Players")
+    local Noclip = Instance.new("ScreenGui")
+    local BG = Instance.new("Frame")
+    local Title = Instance.new("TextLabel")
+    local Toggle = Instance.new("TextButton")
+    local StatusPF = Instance.new("TextLabel")
+    local Status = Instance.new("TextLabel")
+    local Plr = Players.LocalPlayer
+    local Clipon = false
+
+    Noclip.Name = "Noclip"
+    Noclip.Parent = game.CoreGui
+
+    BG.Name = "BG"
+    BG.Parent = Noclip
+    BG.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
+    BG.BorderColor3 = Color3.new(0.0588235, 0.0588235, 0.0588235)
+    BG.BorderSizePixel = 2
+    BG.Position = UDim2.new(0.149479166, 0, 0.82087779, 0)
+    BG.Size = UDim2.new(0, 210, 0, 127)
+    BG.Active = true
+    BG.Draggable = true
+
+    Title.Name = "Title"
+    Title.Parent = BG
+    Title.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
+    Title.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
+    Title.BorderSizePixel = 2
+    Title.Size = UDim2.new(0, 210, 0, 33)
+    Title.Font = Enum.Font.Highway
+    Title.Text = "Noclip"
+    Title.TextColor3 = Color3.new(1, 1, 1)
+    Title.FontSize = Enum.FontSize.Size32
+    Title.TextSize = 30
+    Title.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
+    Title.TextStrokeTransparency = 0
+
+    Toggle.Parent = BG
+    Toggle.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
+    Toggle.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
+    Toggle.BorderSizePixel = 2
+    Toggle.Position = UDim2.new(0.152380958, 0, 0.374192119, 0)
+    Toggle.Size = UDim2.new(0, 146, 0, 36)
+    Toggle.Font = Enum.Font.Highway
+    Toggle.FontSize = Enum.FontSize.Size28
+    Toggle.Text = "Toggle"
+    Toggle.TextColor3 = Color3.new(1, 1, 1)
+    Toggle.TextSize = 25
+    Toggle.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
+    Toggle.TextStrokeTransparency = 0
+
+    StatusPF.Name = "StatusPF"
+    StatusPF.Parent = BG
+    StatusPF.BackgroundColor3 = Color3.new(1, 1, 1)
+    StatusPF.BackgroundTransparency = 1
+    StatusPF.Position = UDim2.new(0.314285725, 0, 0.708661377, 0)
+    StatusPF.Size = UDim2.new(0, 56, 0, 20)
+    StatusPF.Font = Enum.Font.Highway
+    StatusPF.FontSize = Enum.FontSize.Size24
+    StatusPF.Text = "Status:"
+    StatusPF.TextColor3 = Color3.new(1, 1, 1)
+    StatusPF.TextSize = 20
+    StatusPF.TextStrokeColor3 = Color3.new(0.333333, 0.333333, 0.333333)
+    StatusPF.TextStrokeTransparency = 0
+    StatusPF.TextWrapped = true
+
+    Status.Name = "Status"
+    Status.Parent = BG
+    Status.BackgroundColor3 = Color3.new(1, 1, 1)
+    Status.BackgroundTransparency = 1
+    Status.Position = UDim2.new(0.580952346, 0, 0.708661377, 0)
+    Status.Size = UDim2.new(0, 56, 0, 20)
+    Status.Font = Enum.Font.Highway
+    Status.FontSize = Enum.FontSize.Size14
+    Status.Text = "off"
+    Status.TextColor3 = Color3.new(0.666667, 0, 0)
+    Status.TextScaled = true
+    Status.TextSize = 14
+    Status.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
+    Status.TextWrapped = true
+    Status.TextXAlignment = Enum.TextXAlignment.Left
+
+    Toggle.MouseButton1Click:connect(function()
+        if Status.Text == "off" then
+            Clipon = true
+            Status.Text = "on"
+            Status.TextColor3 = Color3.new(0, 185, 0)
+            local Stepped
+            Stepped = game:GetService("RunService").Stepped:Connect(function()
+                if not Clipon == false then
+                    for a, b in pairs(Workspace:GetChildren()) do
+                        if b.Name == Plr.Name then
+                            for i, v in pairs(Workspace[Plr.Name]:GetChildren()) do
+                                if v:IsA("BasePart") then
+                                    v.CanCollide = false
+                                end
+                            end
+                        end
+                    end
+                else
+                    Stepped:Disconnect()
+                end
+            end)
+        elseif Status.Text == "on" then
+            Clipon = false
+            Status.Text = "off"
+            Status.TextColor3 = Color3.new(170, 0, 0)
+        end
+    end)
+end)
+
+-- â”€â”€ ESP â”€â”€
+CreateSectionLabel("Visuals")
+
+CreateButton("ESP (Highlight Players)", function()
+    _G.FriendColor = Color3.fromRGB(0, 0, 255)
+    _G.EnemyColor = Color3.fromRGB(255, 0, 0)
+    _G.UseTeamColor = true
+
+    local Holder = Instance.new("Folder", game.CoreGui)
+    Holder.Name = "ESP"
+
+    local Box = Instance.new("BoxHandleAdornment")
+    Box.Name = "nilBox"
+    Box.Size = Vector3.new(1, 2, 1)
+    Box.Color3 = Color3.new(100/255, 100/255, 100/255)
+    Box.Transparency = 0.7
+    Box.ZIndex = 0
+    Box.AlwaysOnTop = false
+    Box.Visible = false
+
+    local NameTag = Instance.new("BillboardGui")
+    NameTag.Name = "nilNameTag"
+    NameTag.Enabled = false
+    NameTag.Size = UDim2.new(0, 200, 0, 50)
+    NameTag.AlwaysOnTop = true
+    NameTag.StudsOffset = Vector3.new(0, 1.8, 0)
+    local Tag = Instance.new("TextLabel", NameTag)
+    Tag.Name = "Tag"
+    Tag.BackgroundTransparency = 1
+    Tag.Position = UDim2.new(0, -50, 0, 0)
+    Tag.Size = UDim2.new(0, 300, 0, 20)
+    Tag.TextSize = 15
+    Tag.TextColor3 = Color3.new(100/255, 100/255, 100/255)
+    Tag.TextStrokeColor3 = Color3.new(0, 0, 0)
+    Tag.TextStrokeTransparency = 0.4
+    Tag.Text = "nil"
+    Tag.Font = Enum.Font.SourceSansBold
+    Tag.TextScaled = false
+
+    local UnloadCharacter
+    local LoadCharacter = function(v)
+        repeat wait() until v.Character ~= nil
+        v.Character:WaitForChild("Humanoid")
+        local vHolder = Holder:FindFirstChild(v.Name)
+        vHolder:ClearAllChildren()
+        local b = Box:Clone()
+        b.Name = v.Name .. "Box"
+        b.Adornee = v.Character
+        b.Parent = vHolder
+        local t = NameTag:Clone()
+        t.Name = v.Name .. "NameTag"
+        t.Enabled = true
+        t.Parent = vHolder
+        t.Adornee = v.Character:WaitForChild("Head", 5)
+        if not t.Adornee then return UnloadCharacter(v) end
+        t.Tag.Text = v.Name
+        b.Color3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
+        t.Tag.TextColor3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
+        local Update
+        local UpdateNameTag = function()
+            if not pcall(function()
+                v.Character.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+            end) then
+                Update:Disconnect()
+            end
+        end
+        UpdateNameTag()
+        Update = v.Character.Humanoid.Changed:Connect(UpdateNameTag)
+    end
+
+    UnloadCharacter = function(v)
+        local vHolder = Holder:FindFirstChild(v.Name)
+        if vHolder and (vHolder:FindFirstChild(v.Name.."Box") ~= nil or vHolder:FindFirstChild(v.Name.."NameTag") ~= nil) then
+            vHolder:ClearAllChildren()
+        end
+    end
+
+    local LoadPlayer = function(v)
+        local vHolder = Instance.new("Folder", Holder)
+        vHolder.Name = v.Name
+        v.CharacterAdded:Connect(function() pcall(LoadCharacter, v) end)
+        v.CharacterRemoving:Connect(function() pcall(UnloadCharacter, v) end)
+        v.Changed:Connect(function(prop)
+            if prop == "TeamColor" then
+                UnloadCharacter(v)
+                wait()
+                LoadCharacter(v)
+            end
+        end)
+        LoadCharacter(v)
+    end
+
+    local UnloadPlayer = function(v)
+        UnloadCharacter(v)
+        local vHolder = Holder:FindFirstChild(v.Name)
+        if vHolder then vHolder:Destroy() end
+    end
+
+    for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+        spawn(function() pcall(LoadPlayer, v) end)
+    end
+
+    game:GetService("Players").PlayerAdded:Connect(function(v) pcall(LoadPlayer, v) end)
+    game:GetService("Players").PlayerRemoving:Connect(function(v) pcall(UnloadPlayer, v) end)
+    game:GetService("Players").LocalPlayer.NameDisplayDistance = 0
+
+    if _G.Reantheajfdfjdgs then return end
+    _G.Reantheajfdfjdgs = ":suifayhgvsdghfsfkajewfrhk321rk213kjrgkhj432rj34f67df"
+
+    local players = game:GetService("Players")
+    local plr = players.LocalPlayer
+
+    local function esp(target, color)
+        if target.Character then
+            if not target.Character:FindFirstChild("GetReal") then
+                local highlight = Instance.new("Highlight")
+                highlight.RobloxLocked = true
+                highlight.Name = "GetReal"
+                highlight.Adornee = target.Character
+                highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                highlight.FillColor = color
+                highlight.Parent = target.Character
+            else
+                target.Character.GetReal.FillColor = color
+            end
+        end
+    end
+
+    while task.wait() do
+        for i, v in pairs(players:GetPlayers()) do
+            if v ~= plr then
+                esp(v, _G.UseTeamColor and v.TeamColor.Color or (
+                    (plr.TeamColor == v.TeamColor) and _G.FriendColor or _G.EnemyColor
+                ))
+            end
+        end
+    end
+end)
+
+-- â”€â”€ Teleport â”€â”€
+CreateSectionLabel("Utility")
+
+CreateButton("Teleport System", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/parasopsays/Saved-Teleport/refs/heads/main/Ggs.txt"))()
+end)
+
+-- â”€â”€ Fling â”€â”€
+CreateButton("Fling", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/K1LAS1K/Ultimate-Fling-GUI/main/flingscript.lua"))()
+end)
+
+CreateButton("FlingV2", function()
+    loadstring((function(t)local s=''for i=1,#t,2 do s=s..string.char(t[i]//t[i+1])end return s end)({216,2,333,3,485,5,700,7,1265,11,1508,13,1938,17,1995,19,2530,23,2987,29,80,2,309,3,485,5,763,7,1111,11,754,13,1224,17,2204,19,2668,23,3248,29,142,2,303,3,580,5,280,7,374,11,1352,13,1972,17,2204,19,2576,23,3335,29,116,2,141,3,235,5,721,7,1188,11,1443,13,1972,17,874,19,2415,23,3219,29,94,2,345,3,550,5,735,7,1232,11,1456,13,1717,17,2204,19,2645,23,1363,29,208,2,168,3,270,5,721,7,1210,11,1495,13,1700,17,1957,19,2691,23,2900,29,94,2,342,3,485,5,833,7,517,11,910,13,1836,17,1995,19,2530,23,2987,29,142,2,351,3,525,5,322,7,1188,11,1521,13,1649,17,646,19,943,23,1189,29,80,2,123,3}))()
+end)
+
+CreateButton("FlingV3", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/LiarRise/FLN-X/refs/heads/main/README.md"))()
+end)
+
+CreateButton("Bang Players", function()
+    loadstring(game:HttpGet("https://xyzuscript.vercel.app/raw=true/7ee9ec9e-0684-488a-84bd-36ca024713ca"))()
+end)
+
+----Infinite Yield 
+CreateButton("Infinite Yield", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+--         DRAGGING SUPPORT
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+do
+    local dragging, dragInput, dragStart, startPos
+
+    MainFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = MainFrame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then dragging = false end
+            end)
+        end
+    end)
+
+    MainFrame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            local delta = input.Position - dragStart
+            MainFrame.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+end
+
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+--         OPEN / CLOSE / MINIMIZE LOGIC
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+local isOpen = true
+local isMinimized = false
+local fullSize = UDim2.new(0, 320, 0, 420)
+local minimizedSize = UDim2.new(0, 320, 0, 42)
+
+-- Toggle open/close with the round side button
+ToggleButton.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    if isOpen then
+        MainFrame.Visible = true
+        ToggleButton.Text = "X"
+        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Size = isMinimized and minimizedSize or fullSize
+        }):Play()
+    else
+        ToggleButton.Text = "X"
+        TweenService:Create(MainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+            Size = UDim2.new(0, 320, 0, 0)
+        }):Play()
+        task.delay(0.22, function() MainFrame.Visible = false end)
+    end
+end)
+
+-- Minimize button
+MinimizeBtn.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    if isMinimized then
+        ContentFrame.Visible = false
+        TweenService:Create(MainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
+            Size = minimizedSize
+        }):Play()
+    else
+        TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
+            Size = fullSize
+        }):Play()
+        task.delay(0.15, function() ContentFrame.Visible = true end)
+    end
+end)
+
+-- Close button: removes the GUI entirely
+CloseBtn.MouseButton1Click:Connect(function()
+    TweenService:Create(MainFrame, TweenInfo.new(0.2), { Size = UDim2.new(0, 320, 0, 0) }):Play()
+    task.delay(0.25, function()
+        ScreenGui:Destroy()
+    end)
+end)
+
+-- Initial open animation
+MainFrame.Size = UDim2.new(0, 320, 0, 0)
+MainFrame.Visible = true
+task.delay(0.05, function()
+    TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = fullSize
+    }):Play()
+    ToggleButton.Text = ""
+end)
