@@ -1,7 +1,3 @@
--- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
--- â•‘        Carbondioxide GUI v1.0          â•‘
--- â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
@@ -131,10 +127,10 @@ local CloseBtn = Instance.new("TextButton")
 CloseBtn.Name = "CloseBtn"
 CloseBtn.Size = UDim2.new(0, 28, 0, 28)
 CloseBtn.Position = UDim2.new(1, -30, 0.5, -14)
-CloseBtn.BackgroundColor3 = Color3.fromRGB(180, 20, 20)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 CloseBtn.BorderSizePixel = 0
 CloseBtn.Text = "X"
-CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseBtn.TextColor3 = Color3.fromRGB(0, 230, 90)
 CloseBtn.TextSize = 14
 CloseBtn.Font = Enum.Font.GothamBold
 CloseBtn.ZIndex = 4
@@ -168,6 +164,296 @@ ContentPadding.PaddingTop = UDim.new(0, 6)
 ContentPadding.PaddingBottom = UDim.new(0, 10)
 ContentPadding.Parent = ContentFrame
 
+-- SEARCH SYSTEM START ----------------------------------------
+
+-- [ CONFIGURATION ] ------------------------------------------
+local SEARCH_CONFIG = {
+    BarHeight = 36,
+    BarPadding = 8,
+    PlaceholderText = "Search scripts...",
+    FuzzyThreshold = 0.45,
+    DebounceTime = 0.05,
+    HighlightColor = Color3.fromRGB(0, 255, 128),
+    HighlightTextColor = Color3.fromRGB(0, 150, 75),
+}
+
+-- [ FUZZY SEARCH ENGINE ] ------------------------------------
+local SearchEngine = {}
+
+local function levenshtein(s, t)
+    local m, n = #s, #t
+    if m == 0 then return n end
+    if n == 0 then return m end
+
+    local matrix = {}
+    for i = 0, m do
+        matrix[i] = {[0] = i}
+    end
+    for j = 0, n do
+        matrix[0][j] = j
+    end
+
+    for i = 1, m do
+        for j = 1, n do
+            local cost = (s:sub(i,i) == t:sub(j,j)) and 0 or 1
+            matrix[i][j] = math.min(
+                matrix[i-1][j] + 1,
+                matrix[i][j-1] + 1,
+                matrix[i-1][j-1] + cost
+            )
+        end
+    end
+
+    return matrix[m][n]
+end
+
+local function similarity(a, b)
+    a = a:lower()
+    b = b:lower()
+    if b:find(a, 1, true) then return 1.0 end
+    local dist = levenshtein(a, b)
+    local maxLen = math.max(#a, #b)
+    return maxLen > 0 and (1 - dist / maxLen) or 1.0
+end
+
+local function windowSimilarity(query, target)
+    query  = query:lower()
+    target = target:lower()
+    if #query == 0 then return 1.0 end
+    if #query > #target then
+        return similarity(query, target)
+    end
+    local best = 0
+    for i = 1, #target - #query + 1 do
+        local window = target:sub(i, i + #query - 1)
+        local s = similarity(query, window)
+        if s > best then best = s end
+    end
+    return best
+end
+
+function SearchEngine.match(query, label)
+    if query == "" then return 1.0 end
+    local score = windowSimilarity(query, label)
+    local labelLower = label:lower()
+    local queryLower = query:lower()
+    for word in labelLower:gmatch("%S+") do
+        if word:sub(1, #queryLower) == queryLower then
+            score = math.max(score, 0.85)
+            break
+        end
+    end
+    return score
+end
+
+-- [ UI BUILDER ] ---------------------------------------------
+local SearchUI = {}
+
+function SearchUI.createBar(parent)
+    for _, child in ipairs(parent:GetChildren()) do
+        if child:IsA("GuiObject") and child.Name ~= "SearchBar" then
+            child.Position = UDim2.new(
+                child.Position.X.Scale,
+                child.Position.X.Offset,
+                child.Position.Y.Scale,
+                child.Position.Y.Offset + SEARCH_CONFIG.BarHeight + SEARCH_CONFIG.BarPadding
+            )
+        end
+    end
+
+    local container = Instance.new("Frame")
+    container.Name = "SearchBar"
+    container.Size = UDim2.new(1, -16, 0, SEARCH_CONFIG.BarHeight)
+    container.Position = UDim2.new(0, 8, 0, 6)
+    container.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    container.BorderSizePixel = 0
+    container.ZIndex = 10
+    container.Parent = parent
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 8)
+    corner.Parent = container
+
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = Color3.fromRGB(0, 180, 90)
+    stroke.Thickness = 1
+    stroke.Parent = container
+
+    local icon = Instance.new("TextLabel")
+    icon.Size = UDim2.new(0, 28, 1, 0)
+    icon.Position = UDim2.new(0, 4, 0, 0)
+    icon.BackgroundTransparency = 1
+    icon.Text = "🔍"
+    icon.TextSize = 14
+    icon.TextColor3 = Color3.fromRGB(0, 255, 128)
+    icon.TextXAlignment = Enum.TextXAlignment.Center
+    icon.ZIndex = 11
+    icon.Parent = container
+
+    local input = Instance.new("TextBox")
+    input.Name = "SearchInput"
+    input.Size = UDim2.new(1, -36, 1, -8)
+    input.Position = UDim2.new(0, 30, 0, 4)
+    input.BackgroundTransparency = 1
+    input.Text = ""
+    input.PlaceholderText = SEARCH_CONFIG.PlaceholderText
+    input.TextColor3 = Color3.fromRGB(0, 255, 128)
+    input.PlaceholderColor3 = Color3.fromRGB(0, 150, 75)
+    input.TextSize = 14
+    input.Font = Enum.Font.Gotham
+    input.TextXAlignment = Enum.TextXAlignment.Left
+    input.ClearTextOnFocus = false
+    input.ZIndex = 11
+    input.Parent = container
+
+    local clearBtn = Instance.new("TextButton")
+    clearBtn.Name = "ClearButton"
+    clearBtn.Size = UDim2.new(0, 24, 0, 24)
+    clearBtn.Position = UDim2.new(1, -28, 0.5, -12)
+    clearBtn.BackgroundTransparency = 1
+    clearBtn.Text = "✕"
+    clearBtn.TextColor3 = Color3.fromRGB(0, 255, 128)
+    clearBtn.TextSize = 13
+    clearBtn.Font = Enum.Font.GothamBold
+    clearBtn.Visible = false
+    clearBtn.ZIndex = 11
+    clearBtn.Parent = container
+
+    local function setFocusStyle(focused)
+        stroke.Color = focused
+            and Color3.fromRGB(0, 255, 128)
+            or  Color3.fromRGB(0, 180, 90)
+        stroke.Thickness = focused and 1.5 or 1
+    end
+
+    input.Focused:Connect(function() setFocusStyle(true) end)
+    input.FocusLost:Connect(function() setFocusStyle(false) end)
+
+    return container, input, clearBtn
+end
+
+-- [ HIGHLIGHT ] ----------------------------------------------
+local function applyHighlight(button, query)
+    local label = button:FindFirstChildWhichIsA("TextLabel") or button
+
+    if not label then return end
+
+    local original = label:GetAttribute("OriginalText") or label.Text
+    label:SetAttribute("OriginalText", original)
+
+    if not label:GetAttribute("OriginalColor") then
+        label:SetAttribute("OriginalColor", label.TextColor3)
+    end
+
+    if query == "" then
+        label.RichText = false
+        label.Text = original
+        label.TextColor3 = label:GetAttribute("OriginalColor")
+        return
+    end
+
+    local lower = original:lower()
+    local qLower = query:lower()
+    local s, e = lower:find(qLower, 1, true)
+
+    if s then
+        label.RichText = true
+        local pre  = original:sub(1, s-1)
+        local mid  = original:sub(s, e)
+        local post = original:sub(e+1)
+        label.Text = string.format(
+            '%s<font color="rgb(0,255,128)"><b>%s</b></font>%s',
+            pre, mid, post
+        )
+    else
+        label.RichText = false
+        label.Text = original
+    end
+end
+
+-- [ SEARCH CONTROLLER ] --------------------------------------
+local SearchController = {}
+SearchController.__index = SearchController
+
+function SearchController.new(contentFrame, buttonContainer)
+    local self = setmetatable({}, SearchController)
+    self.ContentFrame = contentFrame
+    self.ButtonFrame  = buttonContainer or contentFrame
+    self.LastQuery    = ""
+    self.Debounce     = false
+    self.Buttons      = {}
+
+    local _, inputBox, clearBtn = SearchUI.createBar(contentFrame)
+    self.InputBox = inputBox
+    self.ClearBtn = clearBtn
+
+    task.defer(function()
+        self:refresh()
+        self:_connect()
+        print("[Search] Ready. Buttons found:", #self.Buttons)
+    end)
+
+    return self
+end
+
+function SearchController:refresh()
+    self.Buttons = {}
+    for _, child in ipairs(self.ButtonFrame:GetChildren()) do
+        if (child:IsA("TextButton") or child:IsA("ImageButton"))
+            and child.Name ~= "ClearButton" then
+            table.insert(self.Buttons, child)
+        end
+    end
+end
+
+function SearchController:_filter(query)
+    query = query:match("^%s*(.-)%s*$")
+
+    for _, btn in ipairs(self.Buttons) do
+        local label = btn:FindFirstChildWhichIsA("TextLabel")
+        local text  = label and label.Text or btn.Text
+        text = text:gsub("<[^>]+>", "")
+
+        local score   = SearchEngine.match(query, text)
+        local visible = (query == "") or (score >= SEARCH_CONFIG.FuzzyThreshold)
+
+        btn.Visible = visible
+        if visible then
+            applyHighlight(btn, query)
+        end
+    end
+
+    self.ClearBtn.Visible = (query ~= "")
+end
+
+function SearchController:_connect()
+    self.InputBox:GetPropertyChangedSignal("Text"):Connect(function()
+        if self.Debounce then return end
+        self.Debounce = true
+
+        task.delay(SEARCH_CONFIG.DebounceTime, function()
+            self.Debounce = false
+            local query = self.InputBox.Text
+            if query ~= self.LastQuery then
+                self.LastQuery = query
+                self:_filter(query)
+            end
+        end)
+    end)
+
+    self.ClearBtn.MouseButton1Click:Connect(function()
+        self.InputBox.Text = ""
+        self.InputBox:CaptureFocus()
+        self:_filter("")
+    end)
+end
+
+-- SEARCH SYSTEM END ------------------------------------------
+
+-- Place this line at the very bottom of your script,
+-- after all your buttons have been created:
+local search = SearchController.new(ContentFrame)
+-- SEARCH SYSTEM END ------------------------------------------
 -- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 --             HELPER FUNCTIONS
 -- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
