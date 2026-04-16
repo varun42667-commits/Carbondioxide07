@@ -311,7 +311,7 @@ function SearchUI.createBar(parent)
     clearBtn.Size = UDim2.new(0, 24, 0, 24)
     clearBtn.Position = UDim2.new(1, -28, 0.5, -12)
     clearBtn.BackgroundTransparency = 1
-    clearBtn.Text = "✕"
+    clearBtn.Text = "X"
     clearBtn.TextColor3 = Color3.fromRGB(0, 255, 128)
     clearBtn.TextSize = 13
     clearBtn.Font = Enum.Font.GothamBold
@@ -530,8 +530,6 @@ end
 -- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 -- â”€â”€ Fly â”€â”€
-CreateSectionLabel("Movement")
-
 CreateButton("Fly (Speed Control)", function()
     getgenv().script = "https://raw.githubusercontent.com/danya2854/Myscripts/refs/heads/main/Fly"
     loadstring(game:HttpGet("https://raw.githubusercontent.com/danya2854/Myscripts/refs/heads/main/loader"))()
@@ -653,8 +651,6 @@ CreateButton("No Clip", function()
 end)
 
 -- â”€â”€ ESP â”€â”€
-CreateSectionLabel("Visuals")
-
 CreateButton("ESP (Highlight Players)", function()
     _G.FriendColor = Color3.fromRGB(0, 0, 255)
     _G.EnemyColor = Color3.fromRGB(255, 0, 0)
@@ -792,8 +788,6 @@ CreateButton("ESP (Highlight Players)", function()
 end)
 
 -- â”€â”€ Teleport â”€â”€
-CreateSectionLabel("Utility")
-
 CreateButton("Teleport System", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/parasopsays/Saved-Teleport/refs/heads/main/Ggs.txt"))()
 end)
