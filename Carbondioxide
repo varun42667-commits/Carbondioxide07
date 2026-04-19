@@ -969,7 +969,7 @@ CreateButton("Infinite Yield", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 
--- Initialize search (Basic tab only, must be after all Basic buttons)
+-- Initialize search for Basic tab (unchanged — after all Basic buttons)
 local search = SearchController.new(ContentFrame)
 
 -- ══════════════════════════════════════════════════════
@@ -997,6 +997,15 @@ end)
 CreateGamesButton("Sniper Arena (Works For Every FPS Games)", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/polo242c/sniper-arena/main/snpar"))()
 end)
+
+-- ══════════════════════════════════════════════════════
+-- [NEW] Initialize search for Games tab
+--       Mirrors the exact same call used for Basic tab above.
+--       Must be placed AFTER all Games buttons are created
+--       so SearchController:refresh() picks them all up.
+-- ══════════════════════════════════════════════════════
+local gamesSearch = SearchController.new(GamesFrame)
+-- ══════════════════════════════════════════════════════
 
 -- ══════════════════════════════════════════════════════
 --             DRAGGING SUPPORT
