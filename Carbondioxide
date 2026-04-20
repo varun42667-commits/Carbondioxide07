@@ -422,7 +422,7 @@ function SearchUI.createBar(parent)
     clearBtn.Size = UDim2.new(0, 24, 0, 24)
     clearBtn.Position = UDim2.new(1, -28, 0.5, -12)
     clearBtn.BackgroundTransparency = 1
-    clearBtn.Text = "✕"
+    clearBtn.Text = "X"
     clearBtn.TextColor3 = Color3.fromRGB(0, 255, 128)
     clearBtn.TextSize = 13
     clearBtn.Font = Enum.Font.GothamBold
